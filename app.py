@@ -10,8 +10,7 @@ def remove_special_characters(text):
     return text
 
 video_url = st.text_input("Enter URL:")
-if video_url:
-    video(video_url)
+
     
 @st.cache()    
 def video(video_url):
@@ -44,3 +43,7 @@ def video(video_url):
 
             except :
                 st.error('Sorry Try Again Later')
+                
+                
+if video_url:
+    video(video_url)
