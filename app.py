@@ -12,7 +12,7 @@ def remove_special_characters(text):
 video_url = st.text_input("Enter URL:")
 
     
-@st.cache()    
+ 
 def video(video_url):
     video_instance = pytube.YouTube(video_url)
     video_id = video_instance.video_id
