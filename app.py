@@ -27,10 +27,10 @@ if video_url:
                 video_file = stream.download(filename=file_name)
                 
 
-                with open(title, 'rb') as f:
+                with open(file_name, 'rb') as f:
                     bytes = f.read()
                     b64 = base64.b64encode(bytes).decode()
-                    href = f'<a href="data:file/zip;base64,{b64}" download=\'{title}\'>\
+                    href = f'<a href="data:file/zip;base64,{b64}" download=\'{file_name}\'>\
                         Here is your link \
                     </a>'
                     st.markdown(href, unsafe_allow_html=True)
