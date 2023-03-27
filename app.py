@@ -11,6 +11,10 @@ def remove_special_characters(text):
 
 video_url = st.text_input("Enter URL:")
 if video_url:
+    video(video_url)
+    
+@st.cache()    
+def video(video_url):
     video_instance = pytube.YouTube(video_url)
     video_id = video_instance.video_id
     video_url = f"https://www.youtube.com/watch?v={video_id}"
@@ -25,7 +29,7 @@ if video_url:
             try:
                 stream = video_instance.streams.get_highest_resolution()
                 video_file = stream.download(filename=file_name)
-                
+
 
                 with open(file_name, 'rb') as f:
                     bytes = f.read()
@@ -36,7 +40,7 @@ if video_url:
                     st.markdown(href, unsafe_allow_html=True)
                 st.success("Your File Is Ready To Be Downloaded!")
                 st.balloons()
-                
+
 
             except :
                 st.error('Sorry Try Again Later')
