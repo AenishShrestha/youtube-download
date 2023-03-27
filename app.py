@@ -1,8 +1,13 @@
 import streamlit as st
 import pytube
 import base64
+import re
 from io import BytesIO
 
+def remove_special_characters(text):
+    pattern = r'[^a-zA-z0-9\s]'
+    text = re.sub(pattern, '', text)
+    return text
 
 video_url = st.text_input("Enter URL:")
 if video_url:
@@ -11,18 +16,27 @@ if video_url:
     video_url = f"https://www.youtube.com/watch?v={video_id}"
     st.video(video_url)
     file_name =f'{video_instance.title}'
+    file_name = remove_special_characters(file_name)
+    file_name = f'{file_name}.mp4'
     st.write(file_name)
-    if st.button("Download Video"):
-        st.success("File will be downloaded shortly.")
-        stream = video_instance.streams.get_highest_resolution()
-        title = 'test.mp4'
-        video_file = stream.download(filename=title)
-        with open(title, 'rb') as f:
-            bytes = f.read()
-            b64 = base64.b64encode(bytes).decode()
-            href = f'<a href="data:file/zip;base64,{b64}" download=\'{title}\'>\
-                Here is your link \
-            </a>'
-            st.markdown(href, unsafe_allow_html=True)
+    button = st.button("Download ⚡️")
+    if button:
+        with st.spinner('File will be downloaded shortly. Downloading...'):
+            try:
+                stream = video_instance.streams.get_highest_resolution()
+                video_file = stream.download(filename=file_name)
+                
 
-        st.success("Your File Is Ready To Be Downloaded!")
+                with open(title, 'rb') as f:
+                    bytes = f.read()
+                    b64 = base64.b64encode(bytes).decode()
+                    href = f'<a href="data:file/zip;base64,{b64}" download=\'{title}\'>\
+                        Here is your link \
+                    </a>'
+                    st.markdown(href, unsafe_allow_html=True)
+                st.success("Your File Is Ready To Be Downloaded!")
+                st.balloons()
+                
+
+            except :
+                st.error('Sorry Try Again Later')
